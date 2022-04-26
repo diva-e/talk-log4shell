@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "browser-sync start --config bs-config.js"
+  },
+  "dependencies": {
+    "highlight.js": "^11.5.1",
+    "reveal.js": "^4.3.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.27.9"
+  }
+}

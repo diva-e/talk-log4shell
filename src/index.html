@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>diva-e - Die Technik hinter Log4Shell & Co.</title>
+
+    <link rel="stylesheet" href="/node_modules/reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="/node_modules/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="theme/diva-e.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="/node_modules/highlight.js/styles/intellij-light.css">
+
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <section class="title">
+            <div class="header"></div>
+            <div class="content">
+                <h1>Die Technik hinter Log4Shell & Co.</h1>
+                <p><small>Christoph Wende und Christian Kumpe, 17. Mai 2022, Entwicklertag Karlsruhe</small></p>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Prästentationstitel - Kapitel</div>
+            <div class="content">
+                <h2>Agenda</h2>
+                <ol>
+                    <li>Ich bin ein Blindtext.</li>
+                    <li>Ich bin ein Blindtext.</li>
+                    <li>
+                        Ich bin ein Blindtext.
+                        <ul>
+                            <li>Es hat lange gedauert, bis ich begriffen habe, was es bedeutet, ein blinder Text zu sein.</li>
+                            <li>Man macht keinen Sinn. Man wirkt hier und da aus dem Zusammenhang gerissen. Oft wird man gar nicht erst gelesen.</li>
+                            <li>Aber bin ich deshalb ein schlechter Text? Ich weiss, dass ich nie die Chance haben werde, im Stern zu erscheinen. Aber bin ich darum weniger
+                                wichtig? Ich bin blind!
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Ich bin ein Blindtext.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Prästentationstitel - Kapitel</div>
+            <div class="content">
+            <pre><code data-line-numbers>@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@SpringBootTest
+@ActiveProfiles
+public @interface SpringBootIntegrationTest {
+    @AliasFor(annotation = ActiveProfiles.class, attribute = "profiles") String[] activeProfiles() default {"test"};
+}
+</code></pre>
+            </div>
+        </section>
+
+        <section class="magenta">
+            <div class="header"></div>
+            <div class="content">
+                <h1>Kapitel/Trennseite</h1>
+            </div>
+        </section>
+
+        <section class="blue">
+            <div class="header"></div>
+            <div class="content">
+                <h1>Kapitel/Trennseite</h1>
+            </div>
+        </section>
+
+        <section class="gold">
+            <div class="header"></div>
+            <div class="content">
+                <h1>Kapitel/Trennseite</h1>
+            </div>
+        </section>
+
+        <section class="gray">
+            <div class="header"></div>
+            <div class="content">
+                <h1>Kapitel/Trennseite</h1>
+            </div>
+        </section>
+
+        <section class="thanks">
+            <div class="header">
+                <h1>diva-e. You can’t buy it. You can’t make it.<br>
+                    And you sure can’t fake it.</h1>
+            </div>
+            <div class="content">
+                <h1>Danke</h1>
+                <p>Bitte gebt uns Feedback!</p>
+            </div>
+            <div class="footnote">
+                <p>Copyright © diva-e
+                <p>Alle Angaben basieren auf dem derzeitigen Kenntnisstand. Änderungen vorbehalten. Dieses Dokument der diva-e Digital Value Excellence GmbH ist ausschließlich für den Adressaten bzw. Auftraggeber bestimmt. Es bleibt bis zur einer ausdrücklichen Übertragung von Nutzungsrechten Eigentum der diva-e. Jede Bearbeitung, Verwertung, Vervielfältigung und/oder gewerbsmäßige Verbreitung des Werkes ist nur mit Einverständnis von diva-e zulässig.
+                <p>All content is based on the current state of communication. Subject to change. This document of diva-e Digital Value Exellence GmbH is only intended for the client. It belongs to diva-e until its explicit transfer of usage rights. Any adaptation, utilization, copy and/or professional spreading has to be approved by diva-e.
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script type="module">
+
+    import Reveal from '/node_modules/reveal.js/dist/reveal.esm.js';
+    import Markdown from '/node_modules/reveal.js/plugin/markdown/markdown.esm.js';
+    import Highlight from '/node_modules/reveal.js/plugin/highlight/highlight.esm.js';
+
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        width: 1500,
+        height: 843,
+        margin: 0.05,
+        hash: true,
+        slideNumber: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [Markdown, Highlight]
+    });
+</script>
+</body>
+</html>
