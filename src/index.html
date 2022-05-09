@@ -62,12 +62,100 @@ public @interface SpringBootIntegrationTest {
             </div>
         </section>
 
+<!--
+    Schritt 1: Nachladen von Bytecode (Christoph)
+-->
+
         <section class="magenta">
             <div class="header"></div>
             <div class="content">
-                <h1>Kapitel/Trennseite</h1>
+                <h1>Nachladen von Bytecode</h1>
             </div>
         </section>
+
+        <section>
+            <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
+            <div class="content">
+                <h2>Was?</h2>
+                <ul>
+                    <li>Funktioniert nur mit JDK < 8u...</li>
+                </ul>
+                <h2>Wie?</h2>
+                <ul>
+                    <li>...</li>
+                </ul>
+            </div>
+        </section>
+
+
+<!--
+    Schritt 2: Verbesserter Angriff über Deserialization (Christian)
+-->
+
+        <section class="magenta">
+            <div class="header"></div>
+            <div class="content">
+                <h1>Advanced Attack with Deserialization</h1>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Log4Shell &mdash; Verbesserter Angriff über Deserialization</div>
+            <div class="content">
+                <h2>Warum?</h2>
+                <ul>
+                    <li>Funktioniert auch mit JDK > 8u...</li>
+                    <li>Muss aber LDAP Server erreichen können.</li>
+                </ul>
+                <h2>Wie?</h2>
+                <ul>
+                    <li>Bytecode für Payload in Daten verpacken.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Prästentationstitel - Kapitel</div>
+            <div class="content">
+                <pre><code data-line-numbers data-trim>
+package com.divae.talks.log4shell.exploit.deserialization.intro;
+
+import java.io.*;
+
+public class Step1_SerializationBasics {
+
+ @SuppressWarnings("IOStreamConstructor")
+ public static void main(String[] args) throws Exception {
+   SerializableClass serializableObject = new SerializableClass();
+   serializableObject.value = 1;
+
+   System.out.println("Serializing object...");
+   try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("serialized-data.tmp"))) {
+     objectOutputStream.writeObject(serializableObject);
+   }
+
+   System.out.println("Deserializing bytes...");
+   try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("serialized-data.tmp"))) {
+     SerializableClass deserializedObject = (SerializableClass) objectInputStream.readObject();
+     System.out.println("Value after deserialization: " + deserializedObject.value);
+   }
+
+   System.out.println("Done.");
+ }
+
+ public static class SerializableClass implements Serializable {
+
+   private int value = 0;
+
+  }
+
+}
+                </code></pre>
+            </div>
+        </section>
+<!--
+    Fazit
+-->
 
         <section class="blue">
             <div class="header"></div>
