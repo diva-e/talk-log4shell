@@ -3,12 +3,12 @@
     <style>
     svg {
         fill: #1d1d1b;
-        font-family: 'Fira Sans';
+        font-family: 'Open Sans';
         font-size: 25px;
         font-weight: 300;
     }
     </style>
   </defs>
   <rect x="1421.6" y="40" width="28.35" height="5.1"/>
-  <text x="1197.0756" y="93.925003">Digital Value Excelence</text>
+  <text x="1187.0756" y="93.925003">Digital Value Excellence</text>
 </svg>
