@@ -51,7 +51,7 @@
         <section>
             <div class="header">Prästentationstitel - Kapitel</div>
             <div class="content">
-            <pre><code data-line-numbers>@Target(ElementType.TYPE)
+            <pre><code data-line-numbers="3-5|8-10|13-15">@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest
 @ActiveProfiles
@@ -62,9 +62,9 @@ public @interface SpringBootIntegrationTest {
             </div>
         </section>
 
-<!--
-    Schritt 1: Nachladen von Bytecode (Christoph)
--->
+        <!--
+            Schritt 1: Nachladen von Bytecode (Christoph)
+        -->
 
         <section class="magenta">
             <div class="header"></div>
@@ -175,9 +175,9 @@ public class Step3_ClassForBytes {
           </div>
         </section>
 
-<!--
-    Schritt 2: Verbesserter Angriff über Deserialization (Christian)
--->
+        <!--
+            Schritt 2: Verbesserter Angriff über Deserialization (Christian)
+        -->
 
         <section class="magenta">
             <div class="header"></div>
@@ -202,47 +202,149 @@ public class Step3_ClassForBytes {
         </section>
 
         <section>
-            <div class="header">Prästentationstitel - Kapitel</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Grundlagen der Java Serialisierung</div>
             <div class="content">
-                <pre><code data-line-numbers data-trim>
-package com.divae.talks.log4shell.exploit.deserialization.intro;
-
+                <p>Daten mit Java Serialisieren und Deserialisieren</p>
+                <pre class="code"><code data-trim data-line-numbers="5-9|13-15|17-23|25-32" class="java">
 import java.io.*;
 
-public class Step1_SerializationBasics {
+public class SerializationBasics {
 
- @SuppressWarnings("IOStreamConstructor")
- public static void main(String[] args) throws Exception {
-   SerializableClass serializableObject = new SerializableClass();
-   serializableObject.value = 1;
+    public static class SerializableClass implements Serializable {
 
-   System.out.println("Serializing object...");
-   try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("serialized-data.tmp"))) {
-     objectOutputStream.writeObject(serializableObject);
-   }
+        private int value = 0;
 
-   System.out.println("Deserializing bytes...");
-   try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("serialized-data.tmp"))) {
-     SerializableClass deserializedObject = (SerializableClass) objectInputStream.readObject();
-     System.out.println("Value after deserialization: " + deserializedObject.value);
-   }
+    }
 
-   System.out.println("Done.");
- }
+    public static void main(String[] args) throws Exception {
 
- public static class SerializableClass implements Serializable {
+        // Objekt erzeugen und Wert zuweisen
+        SerializableClass serializableObject = new SerializableClass();
+        serializableObject.value = 1;
 
-   private int value = 0;
+        // Objekt in Datei schreiben
+        try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
 
-  }
+            out.writeObject(serializableObject);
+
+        }
+
+        // Objekt aus Datei lesen und Wert anzeigen
+        try (FileInputStream file = new FileInputStream("serialized-data.tmp");
+             ObjectInputStream in = new ObjectInputStream(file)) {
+
+            SerializableClass deserializedObject = (SerializableClass) in.readObject();
+            System.out.println("Eingelesener Wert: " + deserializedObject.value);
+
+        }
+
+    }
+
+}
+                </code></pre>
+                <div class="fragment">
+                    <p class="play-icon">Ausgabe des Beispiels</p>
+                    <pre class="output"><code data-trim class="console">
+Eingelesener Wert: 1
+                </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Grundlagen der Java Serialisierung</div>
+            <div class="content">
+                <p>Code beim De-/Serialisieren ausführen</p>
+                <pre class="code"><code data-trim data-line-numbers="5-17|21-33" class="java">
+import java.io.*;
+
+public class SerializationBasics {
+
+    public static class SerializableClass implements Serializable {
+
+        private int value = 0;
+
+        private void writeObject(ObjectOutputStream out) {
+            System.out.println("writeObject wird ausgeführt");
+        }
+
+        private void readObject(ObjectInputStream in) {
+            System.out.println("readObject wird ausgeführt");
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        SerializableClass serializableObject = new SerializableClass();
+        serializableObject.value = 1;
+
+        try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
+            out.writeObject(serializableObject);
+        }
+
+        try (FileInputStream file = new FileInputStream("serialized-data.tmp");
+             ObjectInputStream in = new ObjectInputStream(file)) {
+            SerializableClass deserializedObject = (SerializableClass) in.readObject();
+            System.out.println("Eingelesener Wert: " + deserializedObject.value);
+        }
+
+    }
+
+}
+                </code></pre>
+                <div class="fragment">
+                    <p class="play-icon">Ausgabe des Beispiels</p>
+                    <pre class="output"><code data-trim class="console">
+writeObject wird ausgeführt
+readObject wird ausgeführt
+Eingelesener Wert: 0
+                </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Prästentationstitel - Kapitel</div>
+            <div class="content">
+                <pre><code data-trim data-line-numbers="5-7|10-12|14-18|20-25">
+import java.io.*;
+
+public class SerializationBasics {
+
+    public static class SerializableClass implements Serializable {
+        private int value = 0;
+    }
+
+    public static void main(String[] args) throws Exception {
+        // Instantiate the object
+        SerializableClass serializableObject = new SerializableClass();
+        serializableObject.value = 1;
+
+        // Serialize the object into a file
+        try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
+            out.writeObject(serializableObject);
+        }
+
+        // Deserialize the file to an object
+        try (FileInputStream file = new FileInputStream("serialized-data.tmp");
+             ObjectInputStream in = new ObjectInputStream(file)) {
+            SerializableClass deserializedObject = (SerializableClass) in.readObject();
+            System.out.println("Deserialized value (should be 1): " + deserializedObject.value);
+        }
+    }
 
 }
                 </code></pre>
             </div>
         </section>
-<!--
-    Fazit
--->
+
+        <!--
+            Fazit
+        -->
 
         <section class="blue">
             <div class="header"></div>
@@ -276,8 +378,12 @@ public class Step1_SerializationBasics {
             </div>
             <div class="footnote">
                 <p>Copyright © diva-e
-                <p>Alle Angaben basieren auf dem derzeitigen Kenntnisstand. Änderungen vorbehalten. Dieses Dokument der diva-e Digital Value Excellence GmbH ist ausschließlich für den Adressaten bzw. Auftraggeber bestimmt. Es bleibt bis zur einer ausdrücklichen Übertragung von Nutzungsrechten Eigentum der diva-e. Jede Bearbeitung, Verwertung, Vervielfältigung und/oder gewerbsmäßige Verbreitung des Werkes ist nur mit Einverständnis von diva-e zulässig.
-                <p>All content is based on the current state of communication. Subject to change. This document of diva-e Digital Value Exellence GmbH is only intended for the client. It belongs to diva-e until its explicit transfer of usage rights. Any adaptation, utilization, copy and/or professional spreading has to be approved by diva-e.
+                <p>Alle Angaben basieren auf dem derzeitigen Kenntnisstand. Änderungen vorbehalten. Dieses Dokument der diva-e Digital Value Excellence GmbH ist ausschließlich für
+                    den Adressaten bzw. Auftraggeber bestimmt. Es bleibt bis zur einer ausdrücklichen Übertragung von Nutzungsrechten Eigentum der diva-e. Jede Bearbeitung,
+                    Verwertung, Vervielfältigung und/oder gewerbsmäßige Verbreitung des Werkes ist nur mit Einverständnis von diva-e zulässig.
+                <p>All content is based on the current state of communication. Subject to change. This document of diva-e Digital Value Exellence GmbH is only intended for the
+                    client. It belongs to diva-e until its explicit transfer of usage rights. Any adaptation, utilization, copy and/or professional spreading has to be approved by
+                    diva-e.
             </div>
         </section>
 

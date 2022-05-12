@@ -247,6 +247,14 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
     word-wrap: normal;
 }
 
+.reveal pre.code code {
+    max-height: 300px;
+}
+
+.reveal pre.output code {
+    max-height: 75px;
+}
+
 .reveal .code-wrapper {
     white-space: normal;
 }
@@ -494,3 +502,8 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
     background: #7f7f7fff;
 }
 
+/* Misc */
+.reveal .play-icon::before {
+    content: '▶ ';
+    color: #59a869; font-size: 0.7em; vertical-align: middle;
+}
