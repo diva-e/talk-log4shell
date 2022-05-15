@@ -76,47 +76,45 @@ public @interface SpringBootIntegrationTest {
         <section>
             <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
             <div class="content">
-                <h2>Was?</h2>
-                <ul>
-                    <li>Funktioniert nur mit JDK < 8u...</li>
-                </ul>
-                <h2>Wie?</h2>
-
-                <pre><code data-line-numbers="|5-7">package com.divae.tectalks.log4shell.exploit.basic.intro;
-
-public class Step1_HelloWorld {
+                <h1>Unser Testcase:</h1>
+                <pre><code data-line-numbers="|3-5" class="java">public class Step1_HelloWorld {
 
   static {
-    System.out.println("Static initializer of HelloWorld");
+    System.out.println("Static initializer of Step1_HelloWorld");
   }
 
   public static void main(String[] args) {
-    System.out.println("Hello World!");
+    System.out.println("Hello KET2022!");
   }
 
 }
             </code></pre>
-                <ul>
-                    <li>...</li>
-                </ul>
+              <div class="fragment">
+                <p>Ausgabe des Beispiels:</p>
+                <pre class="output"><code data-trim class="console">
+Static initializer of Step1_HelloWorld
+Hello KET2022!
+                    </code></pre>
+                <p>
+                <br />
+                </div>
+                <div class="fragment">
+                  <p>
+                    Laut JLS <b>12.4. Initialization of Classes and Interfaces</b>
+                    <br />
+                    <br />
+                    <em>Initialization of a class consists of executing its static initializers and the initializers for static fields (class variables) declared in the class. </em>
+                  </p>
+                </p>
+              </div>
             </div>
         </section>
 
         <section>
             <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
             <div class="content">
-                <h2>Was?</h2>
-                <ul>
-                    <li>Funktioniert nur mit JDK < 8u...</li>
-                </ul>
-                <h2>Wie?</h2>
-                <ul>
-                    <li>...</li>
-                </ul>
-
-                <pre><code data-line-numbers="|8|10-11">package com.divae.tectalks.log4shell.exploit.basic.intro;
-
-import java.lang.reflect.Method;
+                <h1>Wie kommt der Code in den ClassLoader?</h1>
+                <pre><code data-line-numbers="|6|8-9" class="java">import java.lang.reflect.Method;
 
 public class Step2_ClassForName {
 
@@ -129,25 +127,22 @@ public class Step2_ClassForName {
 
 }
             </code></pre>
-
-
+              <div class="fragment">
+                <p>Ausgabe des Beispiels:</p>
+                <pre class="output"><code data-trim class="console">
+Static initializer of Step1_HelloWorld
+Hello KET2022!
+                    </code></pre>
+              </div>
             </div>
         </section>
 
         <section>
             <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
             <div class="content">
-                <h2>Was?</h2>
-                <ul>
-                    <li>Funktioniert nur mit JDK < 8u...</li>
-                </ul>
-                <h2>Wie?</h2>
-                <ul>
-                    <li>...</li>
-                </ul>
-                <pre><code data-line-numbers="|10|10,12|12,14-15|12|12,18-22">package com.divae.tectalks.log4shell.exploit.basic.intro;
+                <h1>Und wenn der Code nicht im Classpath liegt?</h1>
 
-import java.io.File;
+                <pre><code data-trim data-line-numbers="|8|8,10|10,12-13|10|10,16-20" class="java">import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 
@@ -169,10 +164,25 @@ public class Step3_ClassForBytes {
   }
 }
             </code></pre>
-
+               <div class="fragment">
+                <p>Ausgabe des Beispiels:</p>
+                <pre class="output"><code data-trim class="console">
+Static initializer of Step1_HelloWorld
+Hello KET2022!
+                </code></pre>
+              </div>
             </div>
         </section>
 
+      <section>
+        <div class="header">Log4Shell &mdash; Nachladen von Bytecode</div>
+        <div class="content">
+          <h1>java --version</h1>
+
+
+
+        </div>
+      </section>
         <!--
             Schritt 2: Verbesserter Angriff über Deserialization (Christian)
         -->
