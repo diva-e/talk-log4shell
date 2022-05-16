@@ -1,0 +1,29 @@
+.reveal section.agenda {
+    background: no-repeat right bottom url("images/pencil.png");
+}
+
+.reveal section.diva-e {
+    background: no-repeat right bottom url("images/diva-e-overview-background.svg");
+}
+
+.reveal section.diva-e .content {
+    padding-right: 60%;
+}
+
+
+.reveal section.christian {
+    background: no-repeat right bottom url("images/christian.jpg");
+}
+
+.reveal section.christoph {
+    background: no-repeat right bottom url("images/christoph.jpg");
+}
+
+.reveal .block {
+    display: inline-block;
+    width: 40px;
+    height: 5px;
+    background: no-repeat left top url("images/block.svg");
+    margin: 20px 0;
+}
+

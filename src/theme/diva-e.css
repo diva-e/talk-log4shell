@@ -162,7 +162,8 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
     list-style-type: disc;
 }
 
-.reveal ul ul {
+.reveal ul ul,
+.reveal ul.lower {
     list-style-type: square;
 }
 
@@ -171,6 +172,7 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
 }
 
 .reveal ul ul,
+.reveal ul.lower,
 .reveal ul ol,
 .reveal ol ol,
 .reveal ol ul {
@@ -186,12 +188,17 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
 }
 
 .reveal ul ul li,
+.reveal ul.lower li,
 .reveal ul ol li,
 .reveal ol ul li,
 .reveal ol ol li{
     font-weight: 300;
     padding-left: .5em;
     margin-bottom: 0;
+}
+
+.reveal ul.lower li {
+    margin-bottom: .5em;
 }
 
 .reveal dt {
@@ -506,5 +513,46 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
 
 /* Misc */
 .hljs-comment {
-    font-size: 1.2em;
+    font-size: 1.1em;
+    font-family: var(--r-main-font) !important;
+    font-style: inherit !important;
+}
+
+.reveal ol.columns {
+    list-style: none;
+    counter-reset: inst;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0;
+}
+
+.reveal ol.columns>li {
+    position: relative;
+    counter-increment: inst;
+    margin: 80px 0 0 0;
+    padding: 0;
+
+    flex: 1;
+}
+
+.reveal ol.columns>li::before {
+    content: counter(inst);
+
+    position: absolute;
+    left: 0;
+    top: -70px;
+    height: 1.75em;
+    width: 1.75em;
+
+    z-index: -1;
+
+    background: #009fe3ff;
+    color: #fff;
+    border-radius: 50%;
+
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.75em;
+    text-align: center;
 }
