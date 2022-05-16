@@ -42,7 +42,8 @@
                     <li>
                         Was war nochmal Log4Shell?
                         <ul>
-                            <li></li>
+                            <li>Wann eigentlich?</li>
+                            <li>Und wie lief das?</li>
                         </ul>
                     </li>
                     <li>
@@ -82,7 +83,7 @@
                     <li>Informatikstudium am KIT (Universität Karlsruhe)</li>
                     <li>Freelancer im Bereich Web und Java</li>
                     <li>Seit Mai 2011 bei diva-e in Karlsruhe</li>
-                    <li>Über 20 Jahre in der Java-Welt unterwegs</li>
+                    <li>Über 20 Jahre in der Java- Welt unterwegs</li>
                 </ul>
             </div>
         </section>
@@ -95,10 +96,9 @@
                 <p>Expert Backend Developer & Team Lead</p>
                 <div class="block"></div>
                 <ul class="lower">
-                    <li>Informatikstudium am ??</li>
-                    <li>Freelancer im Bereich Web und Java</li>
-                    <li>Seit Mai ??? bei diva-e in Karlsruhe</li>
-                    <li>Über 20 Jahre in der Java-Welt unterwegs</li>
+                    <li>Agile Development Evangelist</li>
+                    <li>Seit November 2009 bei diva-e in München</li>
+                    <li>Über 18 Jahre in der Java- Welt unterwegs</li>
                 </ul>
             </div>
         </section>
@@ -115,15 +115,16 @@
             <div class="content">
                 <h1>Was war eigentlich passiert?</h1>
                 <h2>Es war einmal, kurz vor Weihnachten 2021…</h2>
-                <p>…alle freuen sich auf den baldigen Urlaub.</p>
+                <p>… und alle freuen sich auf die besinnliche Zeit...<br><br><br></p>
                 <div class="fragment">
-                <h2>Ein paar Fakten</h2>
-                <ul>
-                    <li><a href="https://www.cve.org/CVERecord?id=CVE-2021-44228">CVE-2021-44228</a></li>
-                    <li>Betroffen war die Bibliothek Apache Log4j2 in Version <= 2.14 </li>
-                    <li>25. Novembe</li>
-                    <li>Aber plätzlilchging edurch die Presse und die Logsfiles</li>
-                </ul>
+                  <h2>Nein, doch nicht:</h2>
+                  <ul>
+                      <li><a href="https://www.cve.org/CVERecord?id=CVE-2021-44228">CVE-2021-44228</a></li>
+                      <li>Gefunden am 25. November, Disclosure am 9. Dezember</li>
+                      <li>Betroffen war die Bibliothek Apache Log4j2 in Version <= 2.14 </li>
+                      <li>Und plötzlich ging es durch die Presse... und durch die Logfiles</li>
+                  </ul>
+                  <img src="./images/log.png"/>
                 </div>
             </div>
         </section>
@@ -143,8 +144,8 @@ public class VulnerableLoggingClass {
 
 }
                 </code></pre>
-                <div class="fragment">
-                    DIAGRAMM
+                <div class="fragment ">
+                    <img src="./images/recap.png">
                 </div>
             </div>
         </section>
@@ -260,14 +261,6 @@ Hello KET2022!
             </div>
         </section>
 
-        <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. — Nachladen von Bytecode</div>
-            <div class="content">
-                <h1>java --version</h1>
-
-
-            </div>
-        </section>
         <!--
             Schritt 2: Verbesserter Angriff über Deserialization (Christian)
         -->
