@@ -4,6 +4,12 @@
 
 In diesem Projekt findet ihr die Folien zum Vortrag. Die Folien wurden mit Hilfe von [reveal.js](https://revealjs.com/) erstellt.
 
+Starten der Präsentation:
+```shell
+npm install
+npm start
+```
+
 # Zusammenfassung
 
 Es ist Vorweihnachtszeit, alle freuen sich auf den baldigen Urlaub, Amazon hat vor kurzem einen der größten Ausfälle im AWS hinter sich gebracht und dann erschüttert plötzlich eine
