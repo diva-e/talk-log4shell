@@ -50,7 +50,7 @@
                         Wie funktioniert's?
                         <ul>
                             <li>Nachladen von Bytecode</li>
-                            <li>Level 2</li>
+                            <li>Der Angriff über LDAP</li>
                         </ul>
                     </li>
                     <li>Fazit</li>
@@ -117,14 +117,14 @@
                 <h2>Es war einmal, kurz vor Weihnachten 2021…</h2>
                 <p>… und alle freuen sich auf die besinnliche Zeit...<br><br><br></p>
                 <div class="fragment">
-                  <h2>Nein, doch nicht:</h2>
-                  <ul>
-                      <li><a href="https://www.cve.org/CVERecord?id=CVE-2021-44228">CVE-2021-44228</a></li>
-                      <li>Gefunden am 25. November, Disclosure am 9. Dezember</li>
-                      <li>Betroffen war die Bibliothek Apache Log4j2 in Version <= 2.14 </li>
-                      <li>Und plötzlich ging es durch die Presse... und durch die Logfiles</li>
-                  </ul>
-                  <img src="./images/log.png"/>
+                    <h2>Nein, doch nicht:</h2>
+                    <ul>
+                        <li><a href="https://www.cve.org/CVERecord?id=CVE-2021-44228">CVE-2021-44228</a></li>
+                        <li>Gefunden am 25. November, Disclosure am 9. Dezember</li>
+                        <li>Betroffen war die Bibliothek Apache Log4j2 in Version <= 2.14</li>
+                        <li>Und plötzlich ging es durch die Presse... und durch die Logfiles</li>
+                    </ul>
+                    <img src="images/log.png" alt="Ausschnitt eines Logfiles"/>
                 </div>
             </div>
         </section>
@@ -146,8 +146,8 @@ public class VulnerableLoggingClass {
 
 }
                 </code></pre>
-                <div class="fragment ">
-                    <img src="./images/recap.png">
+                <div class="fragment">
+                    <img src="images/recap.png" alt="Ablaufdiagramm des Angriffs">
                 </div>
             </div>
         </section>
