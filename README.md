@@ -4,12 +4,13 @@
 
 In diesem Projekt findet ihr die Folien zum Vortrag. Die Folien wurden mit Hilfe von [reveal.js](https://revealjs.com/) erstellt.
 
-Starten der Präsentation:
-
-```shell
-npm install
-npm start
-```
+* Starten der Präsentation:
+  ```shell
+  npm install
+  npm start
+  ```
+* Öffnen der Folien im Browser: http://localhost:3000/
+* Zum drucken unter folgender URL öffnen: http://localhost:3000/?print-pdf
 
 ## Zusammenfassung
 
