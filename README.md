@@ -4,7 +4,8 @@
 
 In diesem Projekt findet ihr die Folien zum Vortrag. Die Folien wurden mit Hilfe von [reveal.js](https://revealjs.com/) erstellt.
 
-* Starten der Präsentation:
+* Direkt öffnen unter https://diva-e.github.io/talk-log4shell
+* Oder lokal mit:
   ```shell
   npm install
   npm start
