@@ -5,6 +5,7 @@
 In diesem Projekt findet ihr die Folien zum Vortrag. Die Folien wurden mit Hilfe von [reveal.js](https://revealjs.com/) erstellt.
 
 * Direkt öffnen unter https://diva-e.github.io/talk-log4shell
+* Als [PDF](Die%20Technik%20hinter%20Log4Shell%20&%20Co.pdf)
 * Oder lokal mit:
   ```shell
   npm install
