@@ -30,4 +30,4 @@ Also macht euch gefasst auf wenig Theorie und viel Code den man so im Entwickler
 Der Vortrag war auf folgenden Konferenzen zu sehen:
 
 * [Karlsruher Entwicklertag 2022](https://entwicklertag.de/karlsruhe/2022/Die_Technik_hinter_Log4Shell_&_Co.html) 
-* [Java Forum Stuttgart 2022](https://www.java-forum-stuttgart.de/vortraege/was-steckt-hinter-log4shell-co/) 
+* [JavaLand 2023](https://www.javaland.eu/) 
