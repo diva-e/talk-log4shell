@@ -31,3 +31,7 @@ Der Vortrag war auf folgenden Konferenzen zu sehen:
 
 * [Karlsruher Entwicklertag 2022](https://entwicklertag.de/karlsruhe/2022/Die_Technik_hinter_Log4Shell_&_Co.html) 
 * [JavaLand 2023](https://www.javaland.eu/) 
+
+## GitHub Page neu bauen
+
+Lokal bauen und die Änderungen im doc Verzeichnis zurück in den main Branch pushen.

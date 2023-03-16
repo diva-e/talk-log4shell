@@ -258,7 +258,7 @@ Hello JavaLand 2023!
         </section>
 
         <!--
-            Schritt 2: Der Angriff über LDAP (Christian)
+            Schritt 2: der Angriff über LDAP (Christian)
         -->
 
         <section class="magenta">
@@ -269,10 +269,10 @@ Hello JavaLand 2023!
         </section>
 
         <section>
-            <div class="header">Log4Shell — Der Angriff über LDAP</div>
+            <div class="header">Log4Shell — der Angriff über LDAP</div>
             <div class="content">
                 <h1>Aufbau der JNDI Einträge im LDAP</h1>
-                <p>Der LDAP Server liefert auf die Anfrage einen Eintrag zurück der den Angriffscode triggert.</p>
+                <p>Der LDAP Server liefert auf die Anfrage einen Eintrag zurück, der den Angriffscode triggert.</p>
                 <div class="two-columns">
                     <div class="fragment">
                         <h2>Mit Remote Code Base</h2>
@@ -319,7 +319,7 @@ Hello JavaLand 2023!
         </section>
 
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
             <div class="content">
                 <h1>Daten mit Java Serialisieren und Deserialisieren</h1>
                 <pre class="code"><code data-trim data-line-numbers="5-10|14-16|18-24|26-33" class="java">
@@ -371,7 +371,7 @@ Eingelesener Wert: 1
         </section>
 
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
             <div class="content">
                 <h1>Eigenen Code bei der Serialisierung ausführen</h1>
                 <pre class="code"><code data-trim data-line-numbers="5-18|22-34" class="java">
@@ -426,7 +426,7 @@ Eingelesener Wert: 0
         </section>
 
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
             <div class="content">
                 <h1>Wie funktioniert ein Angriff über die Deserialisierung in Java?</h1>
                 <ul>
@@ -450,10 +450,10 @@ Eingelesener Wert: 0
         </section>
 
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
             <div class="content">
                 <h1>Eine HashMap als Ausgangspunkt</h1>
-                <p>Eine HashMap serialisiert nicht ihre interne Datenstruktur sondern direkt ihre Schlüssel und Einträge. Beim Deserialisieren werden diese wieder in die interne
+                <p>Eine HashMap serialisiert nicht ihre interne Datenstruktur, sondern direkt ihre Schlüssel und Einträge. Beim Deserialisieren werden diese wieder in die interne
                     Datenstruktur eingefügt.</p>
                 <pre><code data-trim data-line-numbers="9,12,14,20" class="java">
 package java.util;
@@ -484,8 +484,20 @@ public class HashMap&lt;K,V> extends AbstractMap&lt;K,V>
             </div>
         </section>
 
+        <section class="remember">
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
+            <div class="content">
+                <h1>Wir merken uns…</h1>
+                <ul class="lower">
+                    <li>
+                        Beim Deserialisieren einer <em>HashMap</em> führt sie <code>.hashCode()</code>-Methode des Key-Objekts aus.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
             <div class="content">
                 <h1>Beliebige Methode im Classpath ausführen</h1>
                 <p>Über die geschickte Kombination verschiedener Features von Commons Collections können beim Deserialisieren beliebige Methoden im Classpath ausgeführt werden.</p>
@@ -553,8 +565,28 @@ myMethod wird ausgeführt
             </div>
         </section>
 
+        <section class="remember">
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
+            <div class="content">
+                <h1>Wir merken uns…</h1>
+                <ul class="lower">
+                    <li>
+                        Beim Deserialisieren führt die <em>HashMap</em> die <code>.hashCode()</code>-Methode des Key-Objekts aus.
+                    </li>
+                    <li>
+                        Die Kombination aus <em>TiedMapEntry</em> und <em>LazyMap</em> führt den <em>InvokerTransformer</em> aus, sobald <code>.hashCode()</code>
+                        auf dem <em>TiedMapEntry</em> ausgeführt wird.
+                    </li>
+                    <li>
+                        Ein <em>InvokerTransformer</em> kann beliebige Methoden auf einem Objekt ausführen.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
             <div class="content">
                 <h1>Klasse aus serialisierten Daten instantiieren</h1>
                 <p>In Kombination mit dem vorherigen Kniff, lässt sich mit einer Klasse der XSLT Bibliothek Apache Xalan eine eigene Klasse aus serialisierten Daten
@@ -609,7 +641,36 @@ Exception in thread "main" java.lang.NullPointerException
         </section>
 
         <section>
-            <div class="header">Die Technik hinter Log4Shell & Co. — Der Angriff über LDAP</div>
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
+            <div class="content">
+                <h1>Wir haben den Weg zum Ziel!</h1>
+                <ol class="lower fragment">
+                    <li>
+                        Alle verwendeten Objekte und der Bytecode werden serialisiert zum Ziel übertragen werden.
+                    </li>
+                    <li>
+                        Beim Deserialisieren führt die <em>HashMap</em> die <code>.hashCode()</code>-Methode des Key-Objekts aus.
+                    </li>
+                    <li>
+                        Die Kombination aus <em>TiedMapEntry</em> und <em>LazyMap</em> führt den <em>InvokerTransformer</em> aus, sobald <code>.hashCode()</code>
+                        auf dem TiedMapEntry ausgeführt wird.
+                    </li>
+                    <li>
+                        Mit einem <em>InvokerTransformer</em> wird auf dem deserialisierten TemplatesImpl-Objekt <code>.newTransformer()</code> aufgerufen.
+                    </li>
+                    <li>
+                        Der Aufruf der Methode <code>.newTransformer()</code> auf dem TemplatesImpl-Objekt lädt den Bytecode in die JVM. Dabei werden die enthaltenen
+                        <em>static Initializers</em> ausgeführt.
+                    </li>
+                    <li>
+                        Die Payload in einem <em>static Initializer</em> im Bytecode wurde ausgeführt! <img alt="flash" style="height: 3em; vertical-align: top;" src="images/blitz.svg">
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <div class="header">Die Technik hinter Log4Shell & Co. — der Angriff über LDAP</div>
             <div class="content">
                 <h1>Demo</h1>
                 <pre><code data-trim data-line-numbers class="bash">

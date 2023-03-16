@@ -38,3 +38,7 @@
     flex: 1;
     margin-right: 3em;
 }
+
+.reveal .remember li {
+    margin: 0.5em 0;
+}
